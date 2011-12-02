@@ -62,13 +62,16 @@ def create_user(backend, details, response, uid, username, user=None, *args,
         return {'user': user}
     if not username:
         return None
-    import pdb; pdb.set_trace()
+
     warn_setting('SOCIAL_AUTH_CREATE_USERS', 'create_user')
     if not getattr(settings, 'SOCIAL_AUTH_CREATE_USERS', True):
+        ################################################################
         #Added by brianmckinney to allow us to only invite manly users
-        invite_key = kwargs['request'].session.get('invite', False)
+        ###############################################################
         from invite.models import Invitation
-        import pdb; pdb.set_trace()
+
+        invite_key = kwargs['request'].session.get('invite', False)
+        
         if invite_key:
            try:
               invite = Invitation.objects.get(key=invite_key)              
@@ -77,8 +80,9 @@ def create_user(backend, details, response, uid, username, user=None, *args,
                  'user': User.objects.create_user(username=username, email=email),
                  'is_new': True
               }
-           except ObjectDoesNotExist:
+           except Invitation.DoesNotExist:
               pass                                        
+        ############## End edit ###################################
         # Send signal for cases where tracking failed registering is useful.
         socialauth_not_registered.send(sender=backend.__class__,
                                        uid=uid,
