@@ -125,6 +125,8 @@ def disconnect(request, backend, association_id=None):
 
 def auth_process(request, backend):
     """Authenticate using social backend"""
+    if "invite" in request.REQUEST:
+        request.session['invite'] = request.GET['invite']
     # Save any defined redirect_to value into session
     if REDIRECT_FIELD_NAME in request.REQUEST:
         data = request.POST if request.method == 'POST' else request.GET
