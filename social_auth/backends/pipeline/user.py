@@ -76,6 +76,11 @@ def create_user(backend, details, response, uid, username, user=None, *args,
            try:
               invite = Invitation.objects.get(key=invite_key)              
               email = details.get('email')
+              from invite.views import notify_admins, update_invite
+              #Notify admins that we have a new user
+              notify_admins(username)
+              #Update date accepted, invite status
+              update_invite(invite_key)
               return {
                  'user': User.objects.create_user(username=username, email=email),
                  'is_new': True
