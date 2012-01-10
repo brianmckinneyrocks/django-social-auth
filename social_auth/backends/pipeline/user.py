@@ -80,7 +80,7 @@ def create_user(backend, details, response, uid, username, user=None, *args,
               #Notify admins that we have a new user
               notify_admins(username)
               #Update date accepted, invite status
-              update_invite(invite_key)
+              update_invite(invite_key, username)
               return {
                  'user': User.objects.create_user(username=username, email=email),
                  'is_new': True
