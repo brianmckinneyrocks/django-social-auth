@@ -69,9 +69,9 @@ def create_user(backend, details, response, uid, username, user=None, *args,
         #Added by brianmckinney to allow us to only invite manly users
         ###############################################################
         from invite.models import Invitation
-
-        invite_key = kwargs['request'].session.get('invite', False)
-        
+        import pdb; pdb.set_trace()
+        invite_key = kwargs['request'].session.get('invite', "").strip()
+ 
         if invite_key:
            try:
               invite = Invitation.objects.get(key=invite_key)              
