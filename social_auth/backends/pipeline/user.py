@@ -79,9 +79,10 @@ def create_user(backend, details, response, uid, username, user=None, *args,
               #Notify admins that we have a new user
               notify_admins(username)
               #Update date accepted, invite status
+              user = User.objects.create_user(username=username, email=email)
               update_invite(invite_key, username)
               return {
-                 'user': User.objects.create_user(username=username, email=email),
+                 'user': user,
                  'is_new': True
               }
            except Invitation.DoesNotExist:
