@@ -87,7 +87,7 @@ class FacebookAuth(BaseOAuth2):
             #Fix THIS
             #response = cgi.parse_qs(urlopen(url).read())
             #access_token = response['access_token'][0]
-            response = request('GET', url)
+            response = request('GET', url).json()
             access_token = response['access_token']
             data = self.user_data(access_token)
             if data is not None:
