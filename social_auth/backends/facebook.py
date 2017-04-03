@@ -15,6 +15,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 import cgi
+from requests import request
 from urllib import urlencode
 from urllib2 import urlopen
 
@@ -83,8 +84,11 @@ class FacebookAuth(BaseOAuth2):
                              'redirect_uri': self.redirect_uri,
                              'client_secret': settings.FACEBOOK_API_SECRET,
                              'code': self.data['code']})
-            response = cgi.parse_qs(urlopen(url).read())
-            access_token = response['access_token'][0]
+            #Fix THIS
+            #response = cgi.parse_qs(urlopen(url).read())
+            #access_token = response['access_token'][0]
+            response = request('GET', url)
+            access_token = response['access_token']
             data = self.user_data(access_token)
             if data is not None:
                 if 'error' in data:
