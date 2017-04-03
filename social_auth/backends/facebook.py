@@ -28,7 +28,7 @@ from social_auth.utils import sanitize_log_data
 
 # Facebook configuration
 EXPIRES_NAME = getattr(settings, 'SOCIAL_AUTH_EXPIRATION', 'expires')
-FACEBOOK_ME = 'https://graph.facebook.com/me?'
+FACEBOOK_ME = 'https://graph.facebook.com/v2.3/me?'
 
 
 class FacebookBackend(OAuthBackend):
