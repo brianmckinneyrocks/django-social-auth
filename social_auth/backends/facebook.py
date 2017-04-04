@@ -66,7 +66,8 @@ class FacebookAuth(BaseOAuth2):
         url = FACEBOOK_ME + urlencode({'access_token': access_token})
 
         try:
-            data = simplejson.load(urlopen(url))
+            #data = simplejson.load(urlopen(url))
+            data = request('GET', url).json() 
             logger.debug('Found user data for token %s',
                          sanitize_log_data(access_token),
                          extra=dict(data=data))
