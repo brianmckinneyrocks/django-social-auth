@@ -98,8 +98,8 @@ class FacebookAuth(BaseOAuth2):
                 data['access_token'] = access_token
                 # expires will not be part of response if offline access
                 # premission was requested
-                if 'expires' in response:
-                    data['expires'] = response['expires']
+                if 'expires_in' in response:
+                    data['expires'] = response['expires_in']
             kwargs.update({'response': data, self.AUTH_BACKEND.name: True})
             return authenticate(*args, **kwargs)
         else:
