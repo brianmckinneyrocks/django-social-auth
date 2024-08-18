@@ -1,6 +1,7 @@
+import json as simplejson
+
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils import simplejson
 from django.utils.encoding import smart_unicode
 
 
