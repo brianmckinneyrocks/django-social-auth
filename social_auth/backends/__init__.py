@@ -12,7 +12,7 @@ enabled.
 import logging
 logger = logging.getLogger(__name__)
 
-imposrt json as simplejson
+import json as simplejson
 
 from os import walk
 from os.path import basename
