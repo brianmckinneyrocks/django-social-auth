@@ -14,13 +14,14 @@ field, check OAuthBackend class for details on how to extend it.
 import logging
 logger = logging.getLogger(__name__)
 
+import json as simplejson
+
 import cgi
 from requests import request
 from urllib import urlencode
 from urllib2 import urlopen
 
 from django.conf import settings
-from django.utils import simplejson
 from django.contrib.auth import authenticate
 
 from social_auth.backends import BaseOAuth2, OAuthBackend, USERNAME
