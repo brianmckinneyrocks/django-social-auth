@@ -12,6 +12,7 @@ enabled.
 import logging
 logger = logging.getLogger(__name__)
 
+from importlib import import_module
 import json as simplejson
 
 from os import walk
@@ -32,7 +33,6 @@ from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.backends import ModelBackend
-from django.utils.importlib import import_module
 
 from social_auth.models import UserSocialAuth
 from social_auth.utils import setting
