@@ -1,3 +1,4 @@
+import six
 import json as simplejson
 
 from django.core.exceptions import ValidationError
