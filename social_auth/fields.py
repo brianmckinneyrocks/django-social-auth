@@ -9,7 +9,13 @@ class JSONField(models.TextField):
     """Simple JSON field that stores python structures as JSON strings
     on database.
     """
-    __metaclass__ = models.SubfieldBase
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('default', {})
+        super(JSONField, self).__init__(*args, **kwargs)
+
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
 
     def to_python(self, value):
         """
@@ -17,24 +23,32 @@ class JSONField(models.TextField):
         django.core.exceptions.ValidationError if the data can't be converted.
         """
         if self.blank and not value:
-            return None
-        if isinstance(value, basestring):
+            return {}
+        value = value or '{}'
+        if isinstance(value, six.binary_type):
+            value = six.text_type(value, 'utf-8')
+        if isinstance(value, six.string_types):
             try:
-                return simplejson.loads(value)
-            except Exception, e:
-                raise ValidationError(str(e))
+                # with django 1.6 i have '"{}"' as default value here
+                if value[0] == value[-1] == '"':
+                    value = value[1:-1]
+
+                return json.loads(value)
+            except Exception as err:
+                raise ValidationError(str(err))
         else:
-            return value
+            return value 
 
     def validate(self, value, model_instance):
         """Check value is a valid JSON string, raise ValidationError on
         error."""
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             super(JSONField, self).validate(value, model_instance)
             try:
-                simplejson.loads(value)
-            except Exception, e:
-                raise ValidationError(str(e))
+                json.loads(value)
+            except Exception as err:
+                raise ValidationError(str(err))
+ 
 
     def get_prep_value(self, value):
         """Convert value to JSON string before save"""
