@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 import json as simplejson
 
 import cgi
-from requests import request
+from requests import request as fb_request
 from urllib import urlencode
 from urllib2 import urlopen
 
@@ -68,7 +68,7 @@ class FacebookAuth(BaseOAuth2):
 
         try:
             #data = simplejson.load(urlopen(url))
-            data = request('GET', url).json() 
+            data = fb_request('GET', url).json() 
             logger.debug('Found user data for token %s',
                          sanitize_log_data(access_token),
                          extra=dict(data=data))
@@ -89,7 +89,7 @@ class FacebookAuth(BaseOAuth2):
             #Fix THIS
             #response = cgi.parse_qs(urlopen(url).read())
             #access_token = response['access_token'][0]
-            response = request('GET', url).json()
+            response = fb_request('GET', url).json()
             access_token = response['access_token']
             data = self.user_data(access_token)
             if data is not None:

@@ -89,7 +89,7 @@ class SocialAuthBackend(ModelBackend):
     a authentication provider response"""
     name = ''  # provider name, it's stored in database
 
-    def authenticate(self, *args, **kwargs):
+    def authenticate(self, request=None, *args, **kwargs):
         """Authenticate user using social credentials
 
         Authentication is made if this is the correct backend, backend
@@ -102,12 +102,15 @@ class SocialAuthBackend(ModelBackend):
         # authenticate.
         if not (self.name and kwargs.get(self.name) and 'response' in kwargs):
             return None
-
+        import pdb;pdb.set_trace()
         response = kwargs.get('response')
         details = self.get_user_details(response)
         uid = self.get_user_id(details, response)
         user = kwargs.get('user')
-        request = kwargs.get('request')
+        if kwargs.get('request'):
+            request = kwargs.get('request')
+        else:
+            request = request
 
         # Pipeline:
         #   Arguments:
