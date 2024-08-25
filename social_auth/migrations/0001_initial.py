@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('provider', models.CharField(max_length=32)),
                 ('uid', models.CharField(max_length=255)),
                 ('extra_data', social_auth.fields.JSONField(blank=True)),
-                ('user', models.ForeignKey(related_name='social_auth', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='social_auth', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
