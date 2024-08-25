@@ -102,7 +102,6 @@ class SocialAuthBackend(ModelBackend):
         # authenticate.
         if not (self.name and kwargs.get(self.name) and 'response' in kwargs):
             return None
-        import pdb;pdb.set_trace()
         response = kwargs.get('response')
         details = self.get_user_details(response)
         uid = self.get_user_id(details, response)
