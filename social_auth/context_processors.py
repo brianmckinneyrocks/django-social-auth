@@ -37,7 +37,7 @@ def social_auth_by_name_backends(request):
     keys = BACKENDS.keys()
     accounts = dict(zip(keys, [None] * len(keys)))
     
-    if isinstance(request.user, User) and request.user.is_authenticated():
+    if isinstance(request.user, User) and request.user.is_authenticated:
         for associated in request.user.social_auth.all():
             accounts[associated.provider.replace('-', '_')] = associated
     
@@ -63,7 +63,7 @@ def backends_data(user):
 
     # user comes from request.user usually, on /admin/ it will be an instance
     # of auth.User and this code will fail if a custom User model was defined
-    if isinstance(user, User) and user.is_authenticated():
+    if isinstance(user, User) and user.is_authenticated:
         associated = user.social_auth.all()
         not_associated = list(set(available) -
                               set(assoc.provider for assoc in associated))
