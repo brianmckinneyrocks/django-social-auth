@@ -89,7 +89,7 @@ class SocialAuthBackend(ModelBackend):
     a authentication provider response"""
     name = ''  # provider name, it's stored in database
 
-    def authenticate(self, request, *args, **kwargs):
+    def authenticate(self, *args, **kwargs):
         """Authenticate user using social credentials
 
         Authentication is made if this is the correct backend, backend
