@@ -63,12 +63,12 @@ def dsa_view(redirect_name=None):
             except Exception as e:  # some error ocurred
                 backend_name = backend.AUTH_BACKEND.name
 
-                logger.error(unicode(e), exc_info=True,
+                logger.error(str(e), exc_info=True,
                              extra=dict(request=request))
 
                 if 'django.contrib.messages' in settings.INSTALLED_APPS:
                     from django.contrib.messages.api import error
-                    error(request, unicode(e), extra_tags=backend_name)
+                    error(request, str(e), extra_tags=backend_name)
                 else:
                     logger.warn('Messages framework not in place, some '+
                                 'errors have not been shown to the user.')
