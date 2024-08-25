@@ -18,8 +18,8 @@ import json as simplejson
 
 import cgi
 from requests import request as fb_request
-from urllib import urlencode
-from urllib2 import urlopen
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 from django.conf import settings
 from django.contrib.auth import authenticate
