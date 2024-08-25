@@ -60,7 +60,7 @@ def dsa_view(redirect_name=None):
 
             try:
                 return func(request, backend, *args, **kwargs)
-            except Exception, e:  # some error ocurred
+            except Exception as e:  # some error ocurred
                 backend_name = backend.AUTH_BACKEND.name
 
                 logger.error(unicode(e), exc_info=True,

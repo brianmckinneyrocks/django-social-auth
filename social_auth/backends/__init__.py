@@ -17,9 +17,9 @@ import json as simplejson
 
 from os import walk
 from os.path import basename
-from urllib2 import Request, urlopen
-from urllib import urlencode
-from urlparse import urlsplit
+from urllib.request import Request, urlopen
+from urllib.parse import urlencode
+from urllib.parse import urlsplit
 from collections import defaultdict
 
 from openid.consumer.consumer import Consumer, SUCCESS, CANCEL, FAILURE
@@ -420,7 +420,7 @@ class OpenIdAuth(BaseAuth):
 
         try:
             return self.consumer().begin(openid_url)
-        except DiscoveryFailure, err:
+        except DiscoveryFailure as err:
             raise ValueError('OpenID discovery error: %s' % err)
 
     def openid_url(self):
