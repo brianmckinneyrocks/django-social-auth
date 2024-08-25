@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 import json as simplejson
 
 import cgi
-from requests import request
+from requests import request as fb_request
 from urllib import urlencode
 from urllib2 import urlopen
 
@@ -48,24 +48,28 @@ class FacebookBackend(OAuthBackend):
                 'last_name': response.get('last_name', '')}
 
 class HackedStrategy():
+
     def authenticate(self, backend, *args, **kwargs):
         # Ensure the strategy and backend are set
         kwargs['strategy'] = self
         kwargs['backend'] = backend
 
         # If there's a request, include it
-        #if 'request' in kwargs:
-        #    request = kwargs.pop('request')
-        #    user = authenticate(request=request, backend=backend, *args, **kwargs)
+       # if 'request' in kwargs:
+       #     request = kwargs.pop('request')
+       # if 'backend' in kwargs:
+       #     kwargs.pop('backend')
+            #user = authenticate(request=request, *args, **kwargs)
         #else:
         #    user = authenticate(backend=backend, *args, **kwargs)
         #args, kwargs = self.clean_authenticate_args(*args, **kwargs)
+        args, kwargs = self.clean_authenticate_args(*args, **kwargs)
         return authenticate(*args, **kwargs)
 
-    def clean_authenticate_args(self, args, **kwargs):
+    def clean_authenticate_args(self, request=None, *args, **kwargs):
         # Add the request to kwargs if it's provided
-        #if request:
-        #    kwargs['request'] = request
+        if request is not None:
+            kwargs['request'] = request
         return args, kwargs
 
 
@@ -89,7 +93,7 @@ class FacebookAuth(BaseOAuth2):
 
         try:
             #data = simplejson.load(urlopen(url))
-            data = request('GET', url).json() 
+            data = fb_request('GET', url).json() 
             logger.debug('Found user data for token %s',
                          sanitize_log_data(access_token),
                          extra=dict(data=data))
@@ -123,7 +127,7 @@ class FacebookAuth(BaseOAuth2):
             #Fix THIS
             #response = cgi.parse_qs(urlopen(url).read())
             #access_token = response['access_token'][0]
-            response = request('GET', url).json()
+            response = fb_request('GET', url).json()
             access_token = response['access_token']
             data = self.user_data(access_token)
             if data is not None:
@@ -135,12 +139,10 @@ class FacebookAuth(BaseOAuth2):
                 # premission was requested
                 if 'expires_in' in response:
                     data['expires'] = response['expires_in']
-            kwargs.update({'response': data, self.AUTH_BACKEND.name: True})
+            kwargs.update({'response': data, 'backend': self.AUTH_BACKEND.name, self.AUTH_BACKEND.name: True})
  
-            import pdb;pdb.set_trace()   
             strategy = HackedStrategy()
-            #args, kwargs = strategy.clean_authenticate_args(request=request)
-
+            import pdb;pdb.set_trace()
             return strategy.authenticate(*args, **kwargs)
         else:
             error = self.data.get('error') or 'unknown error'
