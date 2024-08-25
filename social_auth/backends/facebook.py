@@ -47,27 +47,6 @@ class FacebookBackend(OAuthBackend):
                 'first_name': response.get('first_name', ''),
                 'last_name': response.get('last_name', '')}
 
-class HackedStrategy():
-    def authenticate(self, backend, *args, **kwargs):
-        # Ensure the strategy and backend are set
-        kwargs['strategy'] = self
-        kwargs['backend'] = backend
-
-        # If there's a request, include it
-        #if 'request' in kwargs:
-        #    request = kwargs.pop('request')
-        #    user = authenticate(request=request, backend=backend, *args, **kwargs)
-        #else:
-        #    user = authenticate(backend=backend, *args, **kwargs)
-        #args, kwargs = self.clean_authenticate_args(*args, **kwargs)
-        return authenticate(*args, **kwargs)
-
-    def clean_authenticate_args(self, args, **kwargs):
-        # Add the request to kwargs if it's provided
-        #if request:
-        #    kwargs['request'] = request
-        return args, kwargs
-
 
 
 class FacebookAuth(BaseOAuth2):
@@ -99,19 +78,6 @@ class FacebookAuth(BaseOAuth2):
                          exc_info=True, extra=dict(data=params))
         return data
 
-    #def authenticate(self, backend, *args, **kwargs):
-    #    kwargs['strategy'] = self
-    #    #kwargs['storage'] = self.storage
-    #    kwargs['backend'] = backend
-    #    return authenticate(*args, **kwargs)
-
-    #def clean_authenticate_args(self, request=None, *args, **kwargs):
-    #    """Cleanup request argument if present, which is passed to
-    #    authenticate as for Django 1.11"""
-    #    if request is not None:
-    #        kwargs['request'] = request
-    #    return args, kwargs 
-
     def auth_complete(self, *args, **kwargs):
         """Completes loging process, must return user instance"""
         if 'code' in self.data:
@@ -136,12 +102,7 @@ class FacebookAuth(BaseOAuth2):
                 if 'expires_in' in response:
                     data['expires'] = response['expires_in']
             kwargs.update({'response': data, self.AUTH_BACKEND.name: True})
- 
-            import pdb;pdb.set_trace()   
-            strategy = HackedStrategy()
-            #args, kwargs = strategy.clean_authenticate_args(request=request)
-
-            return strategy.authenticate(*args, **kwargs)
+            return authenticate(*args, **kwargs)
         else:
             error = self.data.get('error') or 'unknown error'
             raise ValueError('Authentication error: %s' % error)
