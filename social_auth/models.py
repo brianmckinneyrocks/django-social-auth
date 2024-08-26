@@ -33,7 +33,7 @@ class UserSocialAuth(models.Model):
         """Meta data"""
         unique_together = ('provider', 'uid')
 
-    def __unicode__(self):
+    def __str__(self):
         """Return associated user unicode representation"""
         return unicode(self.user)
 
@@ -57,7 +57,7 @@ class Nonce(models.Model):
     timestamp = models.IntegerField()
     salt = models.CharField(max_length=40)
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation"""
         return self.server_url
 
@@ -71,6 +71,6 @@ class Association(models.Model):
     lifetime = models.IntegerField()
     assoc_type = models.CharField(max_length=64)
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation"""
         return '%s %s' % (self.handle, self.issued)
