@@ -17,9 +17,9 @@ def get_username(details, user=None, *args, **kwargs):
         return {'username': user.username}
 
     warn_setting('SOCIAL_AUTH_FORCE_RANDOM_USERNAME', 'get_username')
-    warn_setting('SOCIAL_AUTH_DEFAULT_USERNAME', 'get_username')
+    # warn_setting('SOCIAL_AUTH_DEFAULT_USERNAME', 'get_username')
     warn_setting('SOCIAL_AUTH_UUID_LENGTH', 'get_username')
-    warn_setting('SOCIAL_AUTH_USERNAME_FIXER', 'get_username')
+    # warn_setting('SOCIAL_AUTH_USERNAME_FIXER', 'get_username')
 
     if getattr(settings, 'SOCIAL_AUTH_FORCE_RANDOM_USERNAME', False):
         username = uuid4().get_hex()
@@ -63,7 +63,7 @@ def create_user(backend, details, response, uid, username, user=None, *args,
     if not username:
         return None
 
-    warn_setting('SOCIAL_AUTH_CREATE_USERS', 'create_user')
+    # warn_setting('SOCIAL_AUTH_CREATE_USERS', 'create_user')
     if not getattr(settings, 'SOCIAL_AUTH_CREATE_USERS', True):
         ################################################################
         #Added by brianmckinney to allow us to only invite manly users
